@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>INK</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <main class="ink-window">
+      <header class="ink-header">
+        <div class="logo">INK</div>
+        <button id="theme-toggle" class="theme-toggle">DARK</button>
+      </header>
+
+      <section class="workspace">
+        <aside class="effects-panel">
+          <div class="panel-label">EFFECT</div>
+          <div class="effect-list">
+            <button class="effect-btn active" data-effect="halftone">
+              Halftone
+            </button>
+            <button class="effect-btn" data-effect="noise">Noise</button>
+            <button class="effect-btn" data-effect="dither">Dither</button>
+          </div>
+        </aside>
+
+        <section class="img-pnl">
+          <div class="img-pre" id="img-pre">
+            <div class="empty-state" id="empty-state">
+              <span>Drop img</span>
+            </div>
+            <img id="preview-img" alt="" />
+            <canvas id="effect-canvas"></canvas>
+            <input type="file" id="image-input" accept="image/*" hidden />
+          </div>
+        </section>
+        <aside class="settings-pnl">
+          <div class="pnl-label">SETTINGS</div>
+          <div id="settings-things">
+            <div class="settings-grp" data-settings="halftone">
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Blur</span>
+                  <span id="halftone-blur-value">0</span>
+                </div>
+                <input
+                  type="range"
+                  id="halftone-blur"
+                  min="0"
+                  max="20"
+                  value="0"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Size</span>
+                  <span id="halftone-size-value">8</span>
+                </div>
+                <input
+                  type="range"
+                  id="halftone-size"
+                  min="2"
+                  max="30"
+                  value="8"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Angle</span>
+                  <span id="halftone-angle-value">45°</span>
+                </div>
+                <input
+                  type="range"
+                  id="halftone-angle"
+                  min="0"
+                  max="180"
+                  value="45"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Contrast</span>
+                  <span id="halftone-contrast-value">100</span>
+                </div>
+                <input
+                  type="range"
+                  id="halftone-contrast"
+                  min="0"
+                  max="200"
+                  value="100"
+                />
+              </div>
+            </div>
+            <div class="settings-grp hidden" data-settings="dither">
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Size</span>
+                  <span id="dither-size-value">2</span>
+                </div>
+                <input
+                  type="range"
+                  id="dither-size"
+                  min="1"
+                  max="10"
+                  value="2"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Contrast</span>
+                  <span id="dither-contrast-value">100</span>
+                </div>
+                <input
+                  type="range"
+                  id="dither-contrast"
+                  min="0"
+                  max="200"
+                  value="100"
+                />
+              </div>
+            </div>
+            <div class="settings-grp hidden" data-settings="noise">
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Amount</span>
+                  <span id="noise-amount-value">25</span>
+                </div>
+                <input
+                  type="range"
+                  id="noise-amount"
+                  min="0"
+                  max="100"
+                  value="25"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Size</span>
+                  <span id="noise-size-value">1</span>
+                </div>
+                <input
+                  type="range"
+                  id="noise-size"
+                  min="1"
+                  max="10"
+                  value="1"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Density</span>
+                  <span id="noise-density-value">100</span>
+                </div>
+                <input
+                  type="range"
+                  id="noise-density"
+                  min="0"
+                  max="100"
+                  value="100"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Contrast</span>
+                  <span id="noise-contrast-value">100</span>
+                </div>
+                <input
+                  type="range"
+                  id="noise-contrast"
+                  min="0"
+                  max="200"
+                  value="100"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="color-section">
+            <div class="pnl-label">Colors</div>
+            <select id="color-mode">
+              <option value="two">Two Colors</option>
+              <option value="gradient">Gradient</option>
+              <option value="source">Source</option>
+            </select>
+            <div id="color-ctrls">
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Color 1</span>
+                </div>
+                <input type="color" id="color1" value="#FFFFFF" />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Color 2</span>
+                </div>
+                <input type="color" id="color2" value="#111111" />
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <footer class="img-info">
+        <span id="img-name">No img</span>
+        <span id="img-size">-- x --</span>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
