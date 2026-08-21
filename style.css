@@ -274,6 +274,9 @@ body {
   flex-direction: column;
   gap: 28px;
 }
+.hidden {
+  display: none;
+}
 .settings-grp.hidden {
   display: none;
 }
@@ -284,6 +287,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 11px;
+}
+
+.setting.hidden {
+  display: none;
 }
 
 .setting-header {
@@ -333,6 +340,16 @@ input[type="range"]::-webkit-slider-thumb {
   font-family: "Space Mono", monospace;
   font-size: 10px;
   color: var(--muted);
+}
+
+#analog-effect {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  background: var(--window);
+  color: var(--text);
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
 }
 
 @media (max-width: 900px) {

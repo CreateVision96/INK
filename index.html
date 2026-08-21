@@ -24,6 +24,8 @@
             </button>
             <button class="effect-btn" data-effect="noise">Noise</button>
             <button class="effect-btn" data-effect="dither">Dither</button>
+            <button class="effect-btn" data-effect="pixelate">Pixelate</button>
+            <button class="effect-btn" data-effect="analog">Analog</button>
           </div>
         </aside>
 
@@ -173,6 +175,98 @@
                   min="0"
                   max="200"
                   value="100"
+                />
+              </div>
+            </div>
+            <div class="settings-grp hidden" data-settings="pixelate">
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Size</span>
+                  <span id="pixelate-size-value">10</span>
+                </div>
+                <input
+                  type="range"
+                  id="pixelate-size"
+                  min="2"
+                  max="50"
+                  value="10"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Contrast</span>
+                  <span id="pixelate-contrast-value">100</span>
+                </div>
+                <input
+                  type="range"
+                  id="pixelate-contrast"
+                  min="0"
+                  max="200"
+                  value="100"
+                />
+              </div>
+            </div>
+            <div class="settings-grp hidden" data-settings="analog">
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Effects</span>
+                </div>
+                <select id="analog-effect">
+                  <option value="photocopy">Photocopy</option>
+                  <option value="stamp">Stamp</option>
+                  <option value="newsprint">Newsprint</option>
+                </select>
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Threshold</span>
+                  <span id="photocopy-trsh-value">145</span>
+                </div>
+                <input
+                  type="range"
+                  id="photocopy-trsh"
+                  min="0"
+                  max="255"
+                  value="145"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Stamp Threshold</span>
+                  <span id="stamp-trsh-value">170</span>
+                </div>
+                <input
+                  type="range"
+                  id="stamp-trsh"
+                  min="0"
+                  max="255"
+                  value="170"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Ink Spread</span>
+                  <span id="stamp-spreadValue">2</span>
+                </div>
+                <input
+                  type="range"
+                  id="stamp-spread"
+                  min="0"
+                  max="10"
+                  value="2"
+                />
+              </div>
+              <div class="setting">
+                <div class="setting-header">
+                  <span>Texture</span>
+                  <span id="stamp-texture-value">15</span>
+                </div>
+                <input
+                  type="range"
+                  id="stamp-texture"
+                  min="0"
+                  max="100"
+                  value="15"
                 />
               </div>
             </div>

@@ -11,7 +11,12 @@ effectBtns.forEach((button) => {
   button.addEventListener("click", () => {
     const selectedEffect = button.dataset.effect;
 
-    if (selectedEffect === "noise" || selectedEffect === "dither") {
+    if (
+      selectedEffect === "noise" ||
+      selectedEffect === "dither" ||
+      selectedEffect === "pixelate" ||
+      selectedEffect === "analog"
+    ) {
       colorSection.classList.add("hidden");
     } else {
       colorSection.classList.remove("hidden");
@@ -34,6 +39,10 @@ effectBtns.forEach((button) => {
       renderNoise();
     } else if (selectedEffect === "dither") {
       renderDither();
+    } else if (selectedEffect === "pixelate") {
+      renderPixelate();
+    } else if (selectedEffect === "analog") {
+      renderAnalog();
     } else if (selectedEffect === "halftone") {
       renderHalftone();
     }
@@ -41,7 +50,7 @@ effectBtns.forEach((button) => {
 });
 
 const halftoneSize = document.getElementById("halftone-size");
-const halftoneSizeValue = document.getElementById("halftone-size-value");
+const halftoneSV = document.getElementById("halftone-size-value");
 
 const halftoneAngle = document.getElementById("halftone-angle");
 const halftoneAngleValue = document.getElementById("halftone-angle-value");
@@ -67,45 +76,45 @@ colorMode.addEventListener("change", () => {
     colorControls.classList.remove("hidden");
   }
   if (imagePreview.src) {
-    renderHalftone();
+    requestAnimationFrame(renderHalftone);
   }
 });
 
 color1.addEventListener("input", () => {
   if (imagePreview.src) {
-    renderHalftone();
+    requestAnimationFrame(renderHalftone);
   }
 });
 
 color2.addEventListener("input", () => {
   if (imagePreview.src) {
-    renderHalftone();
+    requestAnimationFrame(renderHalftone);
   }
 });
 
 halftoneSize.addEventListener("input", () => {
-  halftoneSizeValue.textContent = halftoneSize.value;
+  halftoneSV.textContent = halftoneSize.value;
   if (imagePreview.src) {
-    renderHalftone();
+    requestAnimationFrame(renderHalftone);
   }
 });
 halftoneAngle.addEventListener("input", () => {
   halftoneAngleValue.textContent = `${halftoneAngle.value}°`;
   if (imagePreview.src) {
-    renderHalftone();
+    requestAnimationFrame(renderHalftone);
   }
 });
 halftoneContrast.addEventListener("input", () => {
   halftoneContrastValue.textContent = halftoneContrast.value;
   if (imagePreview.src) {
-    renderHalftone();
+    requestAnimationFrame(renderHalftone);
   }
 });
 
 halftoneBlur.addEventListener("input", () => {
   halftoneBlurValue.textContent = halftoneBlur.value;
   if (imagePreview.src) {
-    renderHalftone();
+    requestAnimationFrame(renderHalftone);
   }
 });
 
@@ -113,7 +122,7 @@ const noiseAmount = document.getElementById("noise-amount");
 const noiseAmountValue = document.getElementById("noise-amount-value");
 
 const noiseSize = document.getElementById("noise-size");
-const noiseSizeValue = document.getElementById("noise-size-value");
+const noiseSV = document.getElementById("noise-size-value");
 
 const noiseDensity = document.getElementById("noise-density");
 const noiseDenstyValue = document.getElementById("noise-density-value");
@@ -122,22 +131,125 @@ const noiseContrast = document.getElementById("noise-contrast");
 const noiseContrastValue = document.getElementById("noise-contrast-value");
 
 const ditherSize = document.getElementById("dither-size");
-const ditherSizeValue = document.getElementById("dither-size-value");
+const ditherSV = document.getElementById("dither-size-value");
 
 const ditherContrast = document.getElementById("dither-contrast");
 const ditherContrastValue = document.getElementById("dither-contrast-value");
 
+const pixelateSize = document.getElementById("pixelate-size");
+const pixelateSV = document.getElementById("pixelate-size-value");
+
+const pixelateContrast = document.getElementById("pixelate-contrast");
+const pixelateContrastValue = document.getElementById(
+  "pixelate-contrast-value",
+);
+
+const analogEffect = document.getElementById("analog-effect");
+
+const photocopytrsh = document.getElementById("photocopy-trsh");
+
+const photocopytrshValue = document.getElementById("photocopy-trsh-value");
+
+const stamptrsh = document.getElementById("stamp-trsh");
+const stamptrshValue = document.getElementById("stamp-trsh-value");
+
+const stampSpread = document.getElementById("stamp-spread");
+const stampSpreadValue = document.getElementById("stamp-spreadValue");
+
+const stampTex = document.getElementById("stamp-texture");
+const stampTexValue = document.getElementById("stamp-texture-value");
+
+pixelateSize.addEventListener("input", () => {
+  pixelateSV.textContent = pixelateSize.value;
+
+  if (imagePreview.src) {
+    requestAnimationFrame(renderPixelate);
+  }
+});
+
+pixelateContrast.addEventListener("input", () => {
+  pixelateContrastValue.textContent = pixelateContrast.value;
+  if (imagePreview.src) {
+    requestAnimationFrame(renderPixelate);
+  }
+});
+
+function updateAnalogSettingsVisibility() {
+  const effect = analogEffect.value;
+
+  const photocopySetting = photocopytrsh.closest(".setting");
+  const stampThresholdsetting = stamptrsh.closest(".setting");
+  const stampSpreadSetting = stampSpread.closest(".setting");
+  const stampTextureSetting = stampTex.closest(".setting");
+
+  photocopySetting.classList.add("hidden");
+  stampThresholdsetting.classList.add("hidden");
+  stampSpreadSetting.classList.add("hidden");
+  stampTextureSetting.classList.add("hidden");
+
+  if (effect === "photocopy") {
+    photocopySetting.classList.remove("hidden");
+  }
+
+  if (effect === "stamp") {
+    stampThresholdsetting.classList.remove("hidden");
+    stampSpreadSetting.classList.remove("hidden");
+    stampTextureSetting.classList.remove("hidden");
+  }
+}
+
+updateAnalogSettingsVisibility();
+
+analogEffect.addEventListener("change", () => {
+  updateAnalogSettingsVisibility();
+
+  if (imagePreview.src) {
+    renderAnalog();
+  }
+});
+
+photocopytrsh.addEventListener("input", () => {
+  photocopytrshValue.textContent = photocopytrsh.value;
+
+  if (imagePreview.src && analogEffect.value === "photocopy") {
+    requestAnimationFrame(renderPhotocopy);
+  }
+});
+
+stamptrsh.addEventListener("input", () => {
+  stamptrshValue.textContent = stamptrsh.value;
+  if (imagePreview.src && analogEffect.value === "stamp") {
+    requestAnimationFrame(renderStamp);
+  }
+});
+
+stampSpread.addEventListener("input", () => {
+  stampSpreadValue.textContent = stampSpread.value;
+
+  if (imagePreview.src && analogEffect.value === "stamp") {
+    requestAnimationFrame(renderStamp);
+  }
+});
+
+stampTex.addEventListener("input", () => {
+  stampTexValue.textContent = stampTex.value;
+
+  if (imagePreview.src && analogEffect.value === "stamp") {
+    requestAnimationFrame(renderStamp);
+  }
+});
+
 noiseDensity.addEventListener("input", () => {
   noiseDenstyValue.textContent = noiseDensity.value;
   if (imagePreview.src) {
-    renderNoise();
+    requestAnimationFrame(renderNoise);
   }
 });
 
 noiseContrast.addEventListener("input", () => {
   noiseContrastValue.textContent = noiseContrast.value;
   if (imagePreview.src) {
-    renderNoise();
+    requestAnimationFrame(renderNoise);
   }
 });
 
@@ -145,27 +257,27 @@ noiseAmount.addEventListener("input", () => {
   noiseAmountValue.textContent = noiseAmount.value;
 
   if (imagePreview.src) {
-    renderNoise();
+    requestAnimationFrame(renderNoise);
   }
 });
 noiseSize.addEventListener("input", () => {
-  noiseSizeValue.textContent = noiseSize.value;
+  noiseSV.textContent = noiseSize.value;
 
   if (imagePreview.src) {
-    renderNoise();
+    requestAnimationFrame(renderNoise);
   }
 });
 
 ditherSize.addEventListener("input", () => {
-  ditherSizeValue.textContent = ditherSize.value;
+  ditherSV.textContent = ditherSize.value;
   if (imagePreview.src) {
-    renderDither();
+    requestAnimationFrame(renderDither);
   }
 });
 ditherContrast.addEventListener("input", () => {
   ditherContrastValue.textContent = ditherContrast.value;
   if (imagePreview.src) {
-    renderDither();
+    requestAnimationFrame(renderDither);
   }
 });
 
@@ -230,6 +342,10 @@ function loadImage(file) {
       renderNoise();
     } else if (activeEffect === "dither") {
       renderDither();
+    } else if (activeEffect === "pixelate") {
+      renderPixelate();
+    } else if (activeEffect === "analog") {
+      renderAnalog();
     } else {
       renderHalftone();
     }
@@ -465,10 +581,10 @@ function renderDither() {
 
       brightness = Math.max(0, Math.min(255, brightness));
 
-      const threshold =
+      const trsh =
         (bayer[Math.floor(y / size) % 4][Math.floor(x / size) % 4] + 0.5) * 16;
 
-      const value = brightness > threshold ? 255 : 0;
+      const value = brightness > trsh ? 255 : 0;
 
       for (let yy = 0; yy < size && y + yy < height; yy++) {
         for (let xx = 0; xx < size && x + xx < width; xx++) {
@@ -484,5 +600,227 @@ function renderDither() {
 
   effectCtx.putImageData(imageData, 0, 0);
 
+  effectCanvas.style.display = "block";
+}
+
+function renderPixelate() {
+  const width = imagePreview.naturalWidth;
+  const height = imagePreview.naturalHeight;
+
+  if (!width || !height) return;
+
+  const size = Number(pixelateSize.value);
+  const contrast = Number(pixelateContrast.value);
+
+  effectCanvas.width = width;
+  effectCanvas.height = height;
+
+  effectCtx.clearRect(0, 0, width, height);
+  effectCtx.imageSmoothingEnabled = false;
+
+  const smallWidth = Math.max(1, Math.round(width / size));
+  const smallHeight = Math.max(1, Math.round(height / size));
+
+  const tempCanvas = document.createElement("canvas");
+  tempCanvas.width = smallWidth;
+  tempCanvas.height = smallHeight;
+
+  const tempCtx = tempCanvas.getContext("2d");
+  tempCtx.imageSmoothingEnabled = true;
+  tempCtx.filter = `contrast(${contrast}%)`;
+  tempCtx.drawImage(imagePreview, 0, 0, smallWidth, smallHeight);
+  tempCtx.filter = "none";
+
+  effectCtx.drawImage(
+    tempCanvas,
+    0,
+    0,
+    smallWidth,
+    smallHeight,
+    0,
+    0,
+    width,
+    height,
+  );
+
+  effectCanvas.style.display = "block";
+}
+
+function renderAnalog() {
+  const effect = analogEffect.value;
+
+  if (effect === "photocopy") {
+    renderPhotocopy();
+  } else if (effect === "stamp") {
+    renderStamp();
+  } else if (effect === "newsprint") {
+    renderNewsprint();
+  }
+}
+
+function renderPhotocopy() {
+  const width = imagePreview.naturalWidth;
+  const height = imagePreview.naturalHeight;
+
+  if (!width || !height) return;
+
+  effectCanvas.width = width;
+  effectCanvas.height = height;
+
+  effectCtx.clearRect(0, 0, width, height);
+
+  effectCtx.drawImage(imagePreview, 0, 0, width, height);
+
+  const imageData = effectCtx.getImageData(0, 0, width, height);
+  const pixels = imageData.data;
+
+  for (let i = 0; i < pixels.length; i += 4) {
+    const brightness =
+      0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2];
+
+    const value = brightness > Number(photocopytrsh.value) ? 255 : 0;
+
+    pixels[i] = value;
+    pixels[i + 1] = value;
+    pixels[i + 2] = value;
+  }
+
+  effectCtx.putImageData(imageData, 0, 0);
+  effectCanvas.style.display = "block";
+}
+
+function renderNewsprint() {
+  const width = imagePreview.naturalWidth;
+  const height = imagePreview.naturalHeight;
+
+  if (!width || !height) return;
+
+  effectCanvas.width = width;
+  effectCanvas.height = height;
+
+  effectCtx.clearRect(0, 0, width, height);
+  effectCtx.drawImage(imagePreview, 0, 0, width, height);
+
+  const imageData = effectCtx.getImageData(0, 0, width, height);
+  const pixels = imageData.data;
+
+  effectCtx.fillStyle = "#ffffff";
+  effectCtx.fillRect(0, 0, width, height);
+  effectCtx.fillStyle = "#000000";
+
+  const cellSize = 6;
+  const angle = 45;
+  const radians = (angle * Math.PI) / 180;
+
+  const cos = Math.cos(radians);
+  const sin = Math.sin(radians);
+
+  const centerX = width / 2;
+  const centerY = height / 2;
+
+  const diagonal = Math.sqrt(width * width + height * height);
+
+  for (let screenY = -diagonal; screenY <= diagonal; screenY += cellSize) {
+    for (let screenX = -diagonal; screenX <= diagonal; screenX += cellSize) {
+      const canvasX = centerX + screenX * cos - screenY * sin;
+      const canvasY = centerY + screenX * sin + screenY * cos;
+
+      if (canvasX < 0 || canvasX >= width || canvasY < 0 || canvasY >= height) {
+        continue;
+      }
+
+      const sampleX = Math.floor(canvasX);
+      const sampleY = Math.floor(canvasY);
+      const index = (sampleY * width + sampleX) * 4;
+
+      const brightness =
+        0.299 * pixels[index] +
+        0.587 * pixels[index + 1] +
+        0.114 * pixels[index + 2];
+
+      const inverseLuminance = 1 - brightness / 255;
+      const radius = cellSize * 0.5 * inverseLuminance;
+
+      if (radius < 0.25) {
+        continue;
+      }
+
+      effectCtx.beginPath();
+      effectCtx.arc(canvasX, canvasY, radius, 0, Math.PI * 2);
+      effectCtx.fill();
+    }
+  }
+
+  effectCanvas.style.display = "block";
+}
+
+function renderStamp() {
+  const width = imagePreview.naturalWidth;
+  const height = imagePreview.naturalHeight;
+
+  if (!width || !height) return;
+
+  const trsh = Number(stamptrsh.value);
+  const spread = Number(stampSpread.value);
+  const tex = Number(stampTex.value);
+
+  effectCanvas.width = width;
+  effectCanvas.height = height;
+
+  effectCtx.clearRect(0, 0, width, height);
+
+  effectCtx.drawImage(imagePreview, 0, 0, width, height);
+
+  const imageData = effectCtx.getImageData(0, 0, width, height);
+  const pixels = imageData.data;
+
+  for (let i = 0; i < pixels.length; i += 4) {
+    const brightness =
+      0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2];
+
+    const value = brightness > trsh ? 255 : 0;
+
+    pixels[i] = value;
+    pixels[i + 1] = value;
+    pixels[i + 2] = value;
+  }
+
+  if (spread > 0) {
+    const originalPixels = new Uint8Array(pixels);
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const index = (y * width + x) * 4;
+
+        if (originalPixels[index] === 0) {
+          for (let dy = -spread; dy <= spread; dy++) {
+            for (let dx = -spread; dx <= spread; dx++) {
+              const newX = x + dx;
+              const newY = y + dy;
+
+              if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+                const newIndex = (newY * width + newX) * 4;
+
+                pixels[newIndex] = 0;
+                pixels[newIndex + 1] = 0;
+                pixels[newIndex + 2] = 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (tex > 0) {
+    for (let i = 0; i < pixels.length; i += 4) {
+      if (pixels[i] === 0 && Math.random() * 100 < tex) {
+        pixels[i] = 255;
+        pixels[i + 1] = 255;
+        pixels[i + 2] = 255;
+      }
+    }
+  }
+  effectCtx.putImageData(imageData, 0, 0);
   effectCanvas.style.display = "block";
 }
