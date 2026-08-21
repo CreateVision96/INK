@@ -23,3 +23,5 @@ Made with `HTML` `CSS` `JavaScript`
 5. Use **Blend** to mix the original image with the effect
 6. Hold **Before** to view the original image
 7. Click **Export** to save the result
+
+Inspiration for this theme = https://subhanshh.vercel.app/
