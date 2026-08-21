@@ -35,17 +35,7 @@ effectBtns.forEach((button) => {
       }
     });
 
-    if (selectedEffect === "noise") {
-      renderNoise();
-    } else if (selectedEffect === "dither") {
-      renderDither();
-    } else if (selectedEffect === "pixelate") {
-      renderPixelate();
-    } else if (selectedEffect === "analog") {
-      renderAnalog();
-    } else if (selectedEffect === "halftone") {
-      renderHalftone();
-    }
+    renderCurrentEffect();
   });
 });
 
@@ -63,11 +53,22 @@ const halftoneContrastValue = document.getElementById(
 const halftoneBlur = document.getElementById("halftone-blur");
 const halftoneBlurValue = document.getElementById("halftone-blur-value");
 
+const blend = document.getElementById("blend");
+const blendValue = document.getElementById("blend-value");
+
 const colorMode = document.getElementById("color-mode");
 const colorControls = document.getElementById("color-ctrls");
 
 const color1 = document.getElementById("color1");
 const color2 = document.getElementById("color2");
+
+blend.addEventListener("input", () => {
+  blendValue.textContent = blend.value;
+
+  if (imagePreview.src) {
+    requestAnimationFrame(renderCurrentEffect);
+  }
+});
 
 colorMode.addEventListener("change", () => {
   if (colorMode.value === "source") {
@@ -76,45 +77,45 @@ colorMode.addEventListener("change", () => {
     colorControls.classList.remove("hidden");
   }
   if (imagePreview.src) {
-    requestAnimationFrame(renderHalftone);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
 color1.addEventListener("input", () => {
   if (imagePreview.src) {
-    requestAnimationFrame(renderHalftone);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
 color2.addEventListener("input", () => {
   if (imagePreview.src) {
-    requestAnimationFrame(renderHalftone);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
 halftoneSize.addEventListener("input", () => {
   halftoneSV.textContent = halftoneSize.value;
   if (imagePreview.src) {
-    requestAnimationFrame(renderHalftone);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 halftoneAngle.addEventListener("input", () => {
   halftoneAngleValue.textContent = `${halftoneAngle.value}°`;
   if (imagePreview.src) {
-    requestAnimationFrame(renderHalftone);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 halftoneContrast.addEventListener("input", () => {
   halftoneContrastValue.textContent = halftoneContrast.value;
   if (imagePreview.src) {
-    requestAnimationFrame(renderHalftone);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
 halftoneBlur.addEventListener("input", () => {
   halftoneBlurValue.textContent = halftoneBlur.value;
   if (imagePreview.src) {
-    requestAnimationFrame(renderHalftone);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
@@ -163,14 +164,14 @@ pixelateSize.addEventListener("input", () => {
   pixelateSV.textContent = pixelateSize.value;
 
   if (imagePreview.src) {
-    requestAnimationFrame(renderPixelate);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
 pixelateContrast.addEventListener("input", () => {
   pixelateContrastValue.textContent = pixelateContrast.value;
   if (imagePreview.src) {
-    requestAnimationFrame(renderPixelate);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
@@ -204,7 +205,7 @@ analogEffect.addEventListener("change", () => {
   updateAnalogSettingsVisibility();
 
   if (imagePreview.src) {
-    renderAnalog();
+    renderCurrentEffect();
   }
 });
 
@@ -212,14 +213,14 @@ photocopytrsh.addEventListener("input", () => {
   photocopytrshValue.textContent = photocopytrsh.value;
 
   if (imagePreview.src && analogEffect.value === "photocopy") {
-    requestAnimationFrame(renderPhotocopy);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
 stamptrsh.addEventListener("input", () => {
   stamptrshValue.textContent = stamptrsh.value;
   if (imagePreview.src && analogEffect.value === "stamp") {
-    requestAnimationFrame(renderStamp);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
@@ -227,7 +228,7 @@ stampSpread.addEventListener("input", () => {
   stampSpreadValue.textContent = stampSpread.value;
 
   if (imagePreview.src && analogEffect.value === "stamp") {
-    requestAnimationFrame(renderStamp);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
@@ -235,21 +236,21 @@ stampTex.addEventListener("input", () => {
   stampTexValue.textContent = stampTex.value;
 
   if (imagePreview.src && analogEffect.value === "stamp") {
-    requestAnimationFrame(renderStamp);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
 noiseDensity.addEventListener("input", () => {
   noiseDenstyValue.textContent = noiseDensity.value;
   if (imagePreview.src) {
-    requestAnimationFrame(renderNoise);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
 noiseContrast.addEventListener("input", () => {
   noiseContrastValue.textContent = noiseContrast.value;
   if (imagePreview.src) {
-    requestAnimationFrame(renderNoise);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
@@ -257,27 +258,27 @@ noiseAmount.addEventListener("input", () => {
   noiseAmountValue.textContent = noiseAmount.value;
 
   if (imagePreview.src) {
-    requestAnimationFrame(renderNoise);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 noiseSize.addEventListener("input", () => {
   noiseSV.textContent = noiseSize.value;
 
   if (imagePreview.src) {
-    requestAnimationFrame(renderNoise);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
 ditherSize.addEventListener("input", () => {
   ditherSV.textContent = ditherSize.value;
   if (imagePreview.src) {
-    requestAnimationFrame(renderDither);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 ditherContrast.addEventListener("input", () => {
   ditherContrastValue.textContent = ditherContrast.value;
   if (imagePreview.src) {
-    requestAnimationFrame(renderDither);
+    requestAnimationFrame(renderCurrentEffect);
   }
 });
 
@@ -292,6 +293,42 @@ const emptyState = document.getElementById("empty-state");
 
 const imageName = document.getElementById("img-name");
 const imageSize = document.getElementById("img-size");
+
+const expBTN = document.getElementById("expBTN");
+
+expBTN.addEventListener("click", () => {
+  if (!imagePreview.src) return;
+
+  const link = document.createElement("a");
+
+  link.download = `INK-${imageName.textContent}`;
+  link.href = effectCanvas.toDataURL("image/png");
+
+  link.click();
+});
+
+const beforeBtn = document.getElementById("before-btn");
+
+beforeBtn.addEventListener("mousedown", () => {
+  if (!imagePreview.src) return;
+
+  effectCanvas.style.display = "none";
+  imagePreview.style.display = "block";
+});
+
+beforeBtn.addEventListener("mouseup", () => {
+  if (!imagePreview.src) return;
+
+  imagePreview.style.display = "none";
+  effectCanvas.style.display = "block";
+});
+
+beforeBtn.addEventListener("mouseleave", () => {
+  if (!imagePreview.src) return;
+
+  imagePreview.style.display = "none";
+  effectCanvas.style.display = "block";
+});
 
 imageArea.addEventListener("click", () => {
   imageInput.click();
@@ -644,6 +681,31 @@ function renderPixelate() {
   );
 
   effectCanvas.style.display = "block";
+}
+
+function renderCurrentEffect() {
+  const activeEffect =
+    document.querySelector(".effect-btn.active").dataset.effect;
+
+  if (activeEffect === "noise") {
+    renderNoise();
+  } else if (activeEffect === "dither") {
+    renderDither();
+  } else if (activeEffect === "pixelate") {
+    renderPixelate();
+  } else if (activeEffect === "analog") {
+    renderAnalog();
+  } else {
+    renderHalftone();
+  }
+
+  const blendAmount = Number(blend.value) / 100;
+
+  if (blendAmount < 1) {
+    effectCtx.globalAlpha = 1 - blendAmount;
+    effectCtx.drawImage(imagePreview, 0, 0);
+    effectCtx.globalAlpha = 1;
+  }
 }
 
 function renderAnalog() {

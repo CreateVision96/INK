@@ -12,7 +12,11 @@
     <main class="ink-window">
       <header class="ink-header">
         <div class="logo">INK</div>
-        <button id="theme-toggle" class="theme-toggle">DARK</button>
+        <div class="header-buttons">
+          <button id="before-btn" class="theme-toggle">BEFORE</button>
+          <button id="expBTN" class="theme-toggle">EXPORT</button>
+          <button id="theme-toggle" class="theme-toggle">DARK</button>
+        </div>
       </header>
 
       <section class="workspace">
@@ -214,7 +218,6 @@
                 <select id="analog-effect">
                   <option value="photocopy">Photocopy</option>
                   <option value="stamp">Stamp</option>
-                  <option value="newsprint">Newsprint</option>
                 </select>
               </div>
               <div class="setting">
@@ -269,6 +272,18 @@
                   value="15"
                 />
               </div>
+            </div>
+          </div>
+          <div class="blend-section">
+            <div class="pnl-label">BLEND</div>
+
+            <div class="setting">
+              <div class="setting-header">
+                <span>Original / Effect</span>
+                <span id="blend-value">100</span>
+              </div>
+
+              <input type="range" id="blend" min="0" max="100" value="100" />
             </div>
           </div>
           <div class="color-section">

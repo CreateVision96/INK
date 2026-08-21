@@ -112,6 +112,11 @@ body {
     color 150ms ease,
     border-color 150ms ease;
 }
+
+.header-buttons {
+  display: flex;
+  gap: 8px;
+}
 .theme-toggle:hover {
   background: var(--text);
   color: var(--window);
@@ -121,11 +126,24 @@ body {
   min-height: 0;
   display: grid;
   grid-template-columns: 190px minmax(0, 1fr) 260px;
+  grid-template-rows: minmax(0, 1fr);
 }
 
 .effects-panel {
   padding: 24px;
   border-right: 1px solid var(--border);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.blend-section {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.blend-section .pnl-label {
+  margin-bottom: 18px;
 }
 
 .color-section {
@@ -268,6 +286,19 @@ body {
 .settings-pnl {
   padding: 24px;
   border-left: 1px solid var(--border);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.effects-panel,
+.settings-pnl {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.effects-panel::-webkit-scrollbar,
+.settings-pnl::-webkit-scrollbar {
+  display: none;
 }
 .settings-grp {
   display: flex;
