@@ -16,7 +16,7 @@ Made with `HTML` `CSS` `JavaScript`
 
  ### HOW TO USE!
 
-1. Open [INK][https://createvision96.github.io/INK/]
+1. Open https://createvision96.github.io/INK/
 2. Drop an image into the image area or click it to select an image
 3. Select an effect from the left panel
 4. Adjust the settings on the right
